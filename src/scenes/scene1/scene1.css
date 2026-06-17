@@ -1,0 +1,55 @@
+@font-face {
+    font-family: "Rushblade";
+    src: url(../../assets/fonts/rushblade.ttf) format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+body.scene-1 {
+    background: linear-gradient(#320540, #2e0a4b, #220953, #0d0550);
+    background-size: 400% 400%;
+}
+
+#scene-1 {
+    display: none;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+body.scene-1 #scene-1 {
+    display: block;
+}
+
+#space-before-h1 {
+    padding-top: 40vh;
+}
+
+#scene-1 h1 {
+    margin: 0;
+    text-align: center;
+    font-family: "Rushblade", sans-serif;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 5rem;
+    line-height: 1.1;
+}
+
+#space-after-h1 {
+    padding-bottom: 60vh;
+}
+
+#scene-1-pcconfig-stage {
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+}
+
+#scene-1 .scene-1-scroll-anchor {
+    width: 100%;
+    height: 200vh;
+    pointer-events: none;
+}
+
