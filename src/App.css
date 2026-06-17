@@ -1,0 +1,59 @@
+* {
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+#scenes {
+    position: relative;
+}
+
+#scroll-progress {
+    position: fixed;
+    right: 0.625rem;
+    bottom: 0.625rem;
+    z-index: 20;
+    color: #ffffff;
+    font-size: 2.5vh;
+}
+
+#canvas-layer {
+    width: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.scene-1 #canvas-layer {
+    position: absolute;
+    left: 0;
+    top: 85vh;
+    height: 100vh;
+}
+
+body.scene-1.scene-1-canvas-locked #canvas-layer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+}
+
+body.scene-2 #canvas-layer {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+}
+
+#canvas-container {
+    width: 100%;
+    height: 100%;
+}
+
+#canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
