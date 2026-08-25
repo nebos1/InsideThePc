@@ -53,6 +53,7 @@ export function initScenes(container) {
     container.appendChild(renderer.domElement);
 
     const camera = new THREE.PerspectiveCamera(65, width / height, 0.1, 100);
+    scene.add(camera);
 
     // GLOBAL STATE
     let frameId = null;
@@ -70,14 +71,28 @@ export function initScenes(container) {
 
     // positions of pcConfig, camera before movement and after lerp (last) camera position
     const pcConfigPosition = new THREE.Vector3(5, -2.2, 0);
-    const cameraStartPos = new THREE.Vector3(2.5, 1, 10);
-    const cameraEndPos = new THREE.Vector3(8.9, 1, -2.9);
+    const cameraStartPos = new THREE.Vector3(2.5, 1.8, 10);
+    const cameraEndPos = new THREE.Vector3(8.5, 0.3, -3);
 
     const cameraStartLookAt = new THREE.Vector3(2, -2, -3);
-    const cameraEndLookAt = new THREE.Vector3(8.9, 1, -2.9);
+    const cameraEndLookAt = new THREE.Vector3(8.9, -0.3, -3);
 
     const cameraStartFov = 75;
-    const cameraEndFov = 90;
+    const cameraEndFov = 75;
+
+    // black screen a little bit before camera reaches final state
+    const blackMaterial = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        transparent: true,
+        opacity: 0,
+        depthTest: false,
+        depthWrite: false,
+    })
+
+    const blackPlane = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), blackMaterial);
+
+    blackPlane.position.set(0, 0, -0.1);
+    camera.add(blackPlane);
 
 
     // SCENE 2 STATES
@@ -101,9 +116,11 @@ export function initScenes(container) {
     // Changes the active scene number and refreshes all scene-related visual/body/debug state.
     function setCurrentScene(nextScene) {
         currentScene = nextScene;
+        blackPlane.visible = nextScene === 1;
         updateActiveSceneState(nextScene);
 
         if (nextScene !== 1) {
+            blackMaterial.opacity = 0;
             setBodyClass('scene-1-canvas-locked', false);
         }
 
@@ -190,6 +207,21 @@ export function initScenes(container) {
         camera.updateProjectionMatrix();
     }
 
+    function updateScene1BlackScreen() {
+        const blackStart = 0.88;
+        const blackEnd = 0.94;
+
+        if (scrollPercent < blackStart) {
+            blackMaterial.opacity = 0;
+            return;
+        }
+
+        const t0 = (scrollPercent - blackStart) / (blackEnd - blackStart);
+        const t = THREE.MathUtils.clamp(t0, 0, 1);
+
+        blackMaterial.opacity = t;
+    }
+
     // Runs scene 2 3D action: keeps the CPU fixed and moves the camera across the X axis during the configured scroll range.
     function cameraUpdateForScene2() {
         const t0 = (scrollPercent - scene2CameraMoveStart) / (scene2CameraMoveEnd - scene2CameraMoveStart);
@@ -208,6 +240,7 @@ export function initScenes(container) {
         if (currentScene === 1) {
             renderer.setClearColor(0x000000, 0);
             cameraUpdateForScene1();
+            updateScene1BlackScreen();
         }
 
         if (currentScene === 2) {

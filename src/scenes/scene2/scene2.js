@@ -12,7 +12,7 @@ export function buildScene2(group) {
     group.add(hemiLight);
     group.add(dirLight);
 
-// model
+    // model
     const CPU = new THREE.Object3D();
     const loader = new GLTFLoader();
 
